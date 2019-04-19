@@ -98,8 +98,8 @@ changeSize()
 
 window.onresize = changeSize
 
-
-var speed = 10
+var startSpeed = 25
+var speed = startSpeed
 var timeLeft = 0
 
 
@@ -114,10 +114,30 @@ document.querySelector('.beginAgain').onclick = function() {
       }
    
    }
-   speed = 10
+   speed = startSpeed
 
    nextFigure = new Figure()
 
    score = 0
    scoreBlock.innerHTML = 0
+
+
+   window.onkeydown = function(e) {
+
+      if (e.keyCode == 65) {
+         figureNow.move('left')
+      }
+   
+      if (e.keyCode == 68) {
+         figureNow.move('right')
+      }
+   
+      if (e.keyCode == 87) {
+         figureNow.rotate()
+      }
+      if (e.keyCode == 83) {
+         figureNow.fastFall()
+      }
+   }
+
 }

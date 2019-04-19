@@ -2,7 +2,11 @@ var nextFigure = new Figure()
 var figureNow = new Figure()
 
 function Figure() {
+   speed -= 0.2
 
+   if ( speed < 12 ) {
+      speed = 12
+   }
 
    figureNow = nextFigure
    
