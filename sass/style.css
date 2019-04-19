@@ -30,10 +30,19 @@ body {
   cursor: pointer;
 }
 
-.nextFigure {
-  width: 132px;
-  height: 132px;
+.next-figure {
+  margin-left: 30px;
+  margin-top: 30px;
   background: url("../bg.png");
-  background-background-size: 10px;
+  background-size: 10px;
+}
+
+.game-over {
+  color: #FF2C00;
+  display: none;
+}
+
+.game-over.active {
+  display: block;
 }
 /*# sourceMappingURL=style.css.map */

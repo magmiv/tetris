@@ -7,7 +7,7 @@ body
    margin: 0
 
 .tetris
-   background: url('/bg.png')
+   background: url('../bg.png')
    background-size: 10px
    margin: auto 0 
 
@@ -23,8 +23,14 @@ body
       padding: 5px
       cursor: pointer
 
-.nextFigure
-   width: 132px
-   height: 132px
+.next-figure
+   margin-left: 30px
+   margin-top: 30px
    background: url('../bg.png')
-    background-size: 10px
+   background-size: 10px
+
+.game-over
+   color: #FF2C00
+   display: none
+   &.active
+      display: block

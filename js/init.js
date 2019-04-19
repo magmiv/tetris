@@ -1,8 +1,8 @@
 var canvas = document.querySelector(".tetris")
 var ctx = canvas.getContext("2d")
 
-var nextFigure = document.querySelector(".nextFigure")
-var ctx2 = nextFigure.getContext("2d")
+var next_figure = document.querySelector(".next-figure")
+var ctx2 = next_figure.getContext("2d")
 
 var score = 0
 var scoreBlock = document.querySelector('.score span')
@@ -72,6 +72,7 @@ function isGameOver(that) {
    for (var i = 0; i < 4; i++) {
       if ( field[that.blocks[i].x][that.blocks[i].y] == 1) {
          speed = 10000000
+         document.querySelector(".game-over").classList.add('active')
          window.onkeydown = function() {
             return
          }
@@ -89,10 +90,18 @@ function changeSize() {
    }
    fieldSettings.cellW = blockW
 
+   
    canvas.width = blockW*10
    canvas.height = blockW*21
-
    canvas.style.backgroundSize = blockW + 'px'
+   
+   next_figure.width = blockW*4
+   next_figure.height = blockW*4
+
+   next_figure.style.width = blockW*4 + 'px'
+   next_figure.style.height = blockW*4 + 'px';
+
+   next_figure.style.backgroundSize = blockW + 'px'
 }
 changeSize()
 
@@ -120,7 +129,7 @@ document.querySelector('.beginAgain').onclick = function() {
 
    score = 0
    scoreBlock.innerHTML = 0
-
+   document.querySelector(".game-over").classList.remove('active')
 
    window.onkeydown = function(e) {
 
