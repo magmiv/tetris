@@ -33,7 +33,7 @@ body {
 .nextFigure {
   width: 132px;
   height: 132px;
-  background: url("/bg.png");
+  background: url("../bg.png");
   background-background-size: 10px;
 }
 /*# sourceMappingURL=style.css.map */
