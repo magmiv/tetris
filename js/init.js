@@ -10,118 +10,133 @@ var scoreBlock = document.querySelector('.score span')
 
 
 
+function Field() {
 
-// Создаем поле элементов. Если ячейка в массиве пуста - значит элемент в поле пустой
-var field = []
+   var that = this
 
-var fieldSettings = {
-   w: 10,
-   h: 21
-}
 
-// Создаем структуру массива field
-// Из-за человеческой ошибки создал неверную структуру. Идет заполнение не по строкам, а по столбцам
-for (var i = 0; i < fieldSettings.w; i++) {
+   // Создаем поле элементов. Если ячейка в массиве пуста - значит элемент в поле пустой
+   // Имеет вид матрицы
+   // Если элемент в массиве равен 1 - значит в ячейке есть блок 
+   this.blocks = []
 
-   // Делаем подмассивы
-   field.push([])
+   this.w = 10
+   this.h = 21
 
-   // Заполняем их
-   for (var j = 0; j < fieldSettings.h; j++) {
-      field[i].push([''])
+   this.createFieldStructure = function() {
+      // Создаем структуру массива blocks
+      // Из-за человеческой ошибки создал неверную структуру. Идет заполнение не по строкам, а по столбцам. Переделывать долго, оставил как есть
+      for (var i = 0; i < this.w; i++) {
+         // Делаем подмассивы
+         this.blocks.push([])
 
+         // Заполняем их
+         for (var j = 0; j < this.h; j++) {
+            this.blocks[i].push([''])
+
+         }
+      }
+   }
+   this.createFieldStructure()
+
+
+   // Проверяет, есть ли заполненные линии. Если есть - убирает их и изменяет score
+   this.checkFilledLines = function() {
+
+      // Из-за ошибки с неверным заполнением поля - приходится перебирать именно таким образом
+      main: for (var i = 0; i < this.h; i++) {
+         for (var j = 0; j < this.w; j++) {
+            // Если хоть одна линия пуста - прервать выполнение, перейти на следущую
+            if ( this.blocks[j][i] == '') {
+               continue main
+            }
+            
+         }
+
+         // Если вполнение дошло до этого момента - значить собран целый ряд
+         // Если собран целый ряд - удалить его
+         for (var i1 = 0; i1 < this.w; i1++) {
+            this.blocks[i1][i] = ''
+         }
+   
+         // Сохраняем старое поле. Оно будет использоваться, чтобы опустить блоки относительно их предыдущих координат
+         var oldField = this.blocks
+   
+         // И переместить все блоки вниз
+         for (var j1 = i; j1 > 0; j1--) {
+            for (var line = 0; line < this.w; line++) {
+               this.blocks[line][j1] = oldField[line][j1-1]
+            }
+         }
+         
+         score += 10
+         scoreBlock.innerHTML = score
+   
+      }
    }
 
-}
 
-
-function checkFilledLines() {
-
-   outer: for (var i = 0; i < fieldSettings.h; i++) {
-      for (var j = 0; j < fieldSettings.w; j++) {
-         
-         // Если хоть одна линия пуста - прервать выполнение, перейти на следущую
-         if ( field[j][i] == '') {
-            continue outer
-         }
-         
-      }
-      // Если собран целый ряд - удалить его
-      for (var i1 = 0; i1 < fieldSettings.w; i1++) {
-         field[i1][i] = ''
-      }
-
-      var oldField = field
-
-      // И переместить все блоки вниз
-      for (var j1 = i; j1 > 0; j1--) {
-         for (var line = 0; line < fieldSettings.w; line++) {
-            field[line][j1] = oldField[line][j1-1]
+   this.isGameOver = function(that) {
+      for (var i = 0; i < 4; i++) {
+         if ( field.blocks[that.blocks[i].x][that.blocks[i].y] == 1) {
+            // Останавливаем игру
+            speed = 100000000
+            document.querySelector(".game-over").classList.add('active')
+            window.onkeydown = function() {
+               return
+            }
          }
       }
+   }
+
+
+   // Меняет размеры в зависимости от высоты браузера. Ширина не учитывается
+   this.changeSize = function() {
+      var blockW = document.body.clientHeight/22
+   
+      if (blockW > 40) {
+         blockW = 40
+      }
+      that.cellW = blockW
+   
       
-      score += 10
-      scoreBlock.innerHTML = score
-
-   }
-}
-
-
-function isGameOver(that) {
-
-   for (var i = 0; i < 4; i++) {
-      if ( field[that.blocks[i].x][that.blocks[i].y] == 1) {
-         speed = 10000000
-         document.querySelector(".game-over").classList.add('active')
-         window.onkeydown = function() {
-            return
-         }
-      }
-   }
-}
-
-
-
-function changeSize() {
-   var blockW = document.body.clientHeight/22
-
-   if (blockW > 40) {
-      blockW = 40
-   }
-   fieldSettings.cellW = blockW
-
+      canvas.width = blockW*10
+      canvas.height = blockW*21
+      canvas.style.backgroundSize = blockW + 'px'
+      
+      next_figure.width = blockW*4
+      next_figure.height = blockW*4
    
-   canvas.width = blockW*10
-   canvas.height = blockW*21
-   canvas.style.backgroundSize = blockW + 'px'
+      next_figure.style.width = blockW*4 + 'px'
+      next_figure.style.height = blockW*4 + 'px';
    
-   next_figure.width = blockW*4
-   next_figure.height = blockW*4
+      next_figure.style.backgroundSize = blockW + 'px'
+   }
+   this.changeSize()
+   
 
-   next_figure.style.width = blockW*4 + 'px'
-   next_figure.style.height = blockW*4 + 'px';
+   window.onresize = this.changeSize
+   
 
-   next_figure.style.backgroundSize = blockW + 'px'
 }
-changeSize()
 
-window.onresize = changeSize
+var field = new Field()
+
+
 
 var startSpeed = 25
+// Раз в сколько кадров будет падать новый блок
 var speed = startSpeed
 var timeLeft = 0
 
 
 
-
+// При нажатии на кнопку "начать заново" вернуть все настройки по умолчанию
 document.querySelector('.beginAgain').onclick = function() {
-   for (var i = 0; i < fieldSettings.w; i++) {
-
-      for (var j = 0; j < fieldSettings.h; j++) {
-         field[i][j] = ''
-   
+   for (var i = 0; i < field.w; i++) {
+      for (var j = 0; j < field.h; j++) {
+         field.blocks[i][j] = ''
       }
-   
    }
    speed = startSpeed
 
@@ -131,6 +146,7 @@ document.querySelector('.beginAgain').onclick = function() {
    scoreBlock.innerHTML = 0
    document.querySelector(".game-over").classList.remove('active')
 
+   // Так как при проигрыше сбрасывается управление (а иначе можно двигать блок даже если ты проиграл) - восстанавливаем уравление
    window.onkeydown = function(e) {
 
       if (e.keyCode == 65) {

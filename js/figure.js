@@ -1,7 +1,13 @@
 var nextFigure = new Figure()
 var figureNow = new Figure()
 
+
 function Figure() {
+
+   var that = this
+
+
+   // При каждом новом создании фигуры ускоряем игру
    speed -= 0.2
 
    if ( speed < 15 ) {
@@ -10,12 +16,11 @@ function Figure() {
 
    figureNow = nextFigure
    
-   checkFilledLines()
+   field.checkFilledLines()
    
-   var that = this
    
    //var colors = ['#4169E1', "#FF003E", '#00FFED', "#0047FF", "#FFFF4A", "#FF9400", "#62D847"]
-   //this.color = colors[rand(2)]
+   //this.color = colors[rand()]
 
    
    var types = 
@@ -38,13 +43,15 @@ function Figure() {
    
    this.blocks = types[rand(0,6)]
    
-   isGameOver(that)
-
+   // Проверяет, нет ли фигуры на месте только что созданной
+   field.isGameOver(that)
 
 
 
 
    this.fall = function() {
+
+      // Опускать раз в несколько кадров
       timeLeft++
       if(timeLeft >= speed) {
          timeLeft = 0
@@ -52,8 +59,7 @@ function Figure() {
          // Сначала проверяем, столкнулся какой-либо из блоков
          for (var i = 0; i < that.blocks.length; i++) {
 
-            if (field[that.blocks[i].x][that.blocks[i].y+1] == undefined || field[that.blocks[i].x][that.blocks[i].y+1] == 1) {
-               
+            if (field.blocks[that.blocks[i].x][that.blocks[i].y+1] == undefined || field.blocks[that.blocks[i].x][that.blocks[i].y+1] == 1) {
                that.stopFalling()
                nextFigure = new Figure();
                return
@@ -71,6 +77,7 @@ function Figure() {
       }
    }
    
+   // Быстро опустить блок при нажатии на s
    this.fastFall = function() {
 
       canBeFallen = true
@@ -78,8 +85,7 @@ function Figure() {
          // Сначала проверяем, столкнулся какой-либо из блоков
          for (var i = 0; i < that.blocks.length; i++) {
 
-            if (field[that.blocks[i].x][that.blocks[i].y+1] == undefined || field[that.blocks[i].x][that.blocks[i].y+1] == 1) {
-               
+            if (field.blocks[that.blocks[i].x][that.blocks[i].y+1] == undefined || field.blocks[that.blocks[i].x][that.blocks[i].y+1] == 1) {
                canBeFallen = false
                return
             }
@@ -118,7 +124,7 @@ function Figure() {
 
 
 
-
+   // Проверяет столкновения по бокам
    this.checkCollision = function(side) {
 
       if (side == 'left') {
@@ -132,13 +138,10 @@ function Figure() {
       var canBeMoved = true
 
       that.blocks.forEach(function(element) {
-         // Проверяем, есть ли закрашеный блок 
-         if (element.x+offset < 0 || element.x+offset >= fieldSettings.w) {
+         // Проверяем, есть ли закрашеный блок в новом месте 
+         if (element.x+offset < 0 || element.x+offset >= field.w || field.blocks[element.x+offset][element.y] == 1) {
             canBeMoved = false
             return
-         }
-         if (field[element.x+offset][element.y] == 1) {
-            canBeMoved = false
          }
          
       });
@@ -148,11 +151,11 @@ function Figure() {
 
 
 
-
+   // Если блок столкнулся с окружением - преобразовать блок в единички. (Заполнить массив field.blocks)
    this.stopFalling = function() {
       this.blocks.forEach(function(block) {
          // Заполняем массив field новыми блоками
-         field[block.x][block.y] = 1
+         field.blocks[block.x][block.y] = 1
       })
    }
 
@@ -198,11 +201,11 @@ function Figure() {
 
 
          // Проверяем, не оказался ли какой-нибудь блок вне поля
-         if (absoluteCords[i].x < 0 || absoluteCords[i].x >= fieldSettings.w || 
-             absoluteCords[i].y < 0 || absoluteCords[i].y >= fieldSettings.h) {
+         if (absoluteCords[i].x < 0 || absoluteCords[i].x >= field.w || 
+             absoluteCords[i].y < 0 || absoluteCords[i].y >= field.h) {
             return
          }
-         if (field[absoluteCords[i].x][absoluteCords[i].y] == 1) {
+         if (field.blocks[absoluteCords[i].x][absoluteCords[i].y] == 1) {
             return
          }
 
@@ -235,13 +238,3 @@ function Block(x, y, isMain) {
 
 
 var nextFigure = new Figure();
-
-
-function drawNextFigure() {
-   for (var i = 0; i < nextFigure.blocks.length; i++) {
-
-      ctx2.fillRect( (nextFigure.blocks[i].x - 3) * fieldSettings.cellW, nextFigure.blocks[i].y*fieldSettings.cellW,  fieldSettings.cellW,fieldSettings.cellW)
-
-   }
-   
-}
