@@ -1,36 +1,44 @@
 body
    background-color: #000000
    display: flex
-   justify-content: center
    height: 99vh
    padding: 0
    margin: 0
+   align-items: center
+
+.wrapper
+   width: 100%
+   display: flex
+   justify-content: center
 
 .tetris
    background: url('../bg.png')
    background-size: 10px
-   margin: auto 0 
 
-.wrap
+.left-wrap
+   width: 204px
+
+.right-wrap
+   float: right
    color: #ffffff
    font-size: 20px
    font-family: Arial, Helvetica, sans-serif
-   margin-right: 10px
-   .score
+   margin-left: 40px
+   margin-top: 30px
+
+   .next-figure
+      background: url('../bg.png')
+      background-size: 10px
+      border: 10px solid #F0F0F0
 
    .beginAgain
+      font-size: 18px
       border: 2px solid #ffffff
-      padding: 5px
+      padding: 5px 10px
       cursor: pointer
 
-.next-figure
-   margin-left: 30px
-   margin-top: 30px
-   background: url('../bg.png')
-   background-size: 10px
-
-.game-over
-   color: #FF2C00
-   display: none
-   &.active
-      display: block
+   .game-over
+      color: #FF2C00
+      display: none
+      &.active
+         display: block

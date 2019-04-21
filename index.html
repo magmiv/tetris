@@ -9,14 +9,19 @@
 </head>
 <body>
 	
-	<div class="wrap">
-		<p class="score">Ваш счет: <span>0</span></p>
-		<div class="beginAgain">Начать заново</div>
-		<p class="game-over">Вы проиграли :(</p>
-	</div>
+	<div class="wrapper">
 
-	<canvas class="tetris"></canvas>
-	<canvas class="next-figure"></canvas>
+		<div class="left-wrap"></div>
+
+		<canvas class="tetris"></canvas>
+
+		<div class="right-wrap">
+			<canvas class="next-figure"></canvas>
+			<p class="score">Ваш счет: <span>0</span></p>
+			<div class="beginAgain">Начать заново</div>
+			<p class="game-over">Вы проиграли!</p>
+		</div>
+	</div>
 
 	
 	<script src="js/functions.js"></script>

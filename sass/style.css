@@ -3,46 +3,61 @@ body {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
   height: 99vh;
   padding: 0;
   margin: 0;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.wrapper {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
 .tetris {
   background: url("../bg.png");
   background-size: 10px;
-  margin: auto 0;
 }
 
-.wrap {
+.left-wrap {
+  width: 204px;
+}
+
+.right-wrap {
+  float: right;
   color: #ffffff;
   font-size: 20px;
   font-family: Arial, Helvetica, sans-serif;
-  margin-right: 10px;
+  margin-left: 40px;
+  margin-top: 30px;
 }
 
-.wrap .beginAgain {
+.right-wrap .next-figure {
+  background: url("../bg.png");
+  background-size: 10px;
+  border: 10px solid #F0F0F0;
+}
+
+.right-wrap .beginAgain {
+  font-size: 18px;
   border: 2px solid #ffffff;
-  padding: 5px;
+  padding: 5px 10px;
   cursor: pointer;
 }
 
-.next-figure {
-  margin-left: 30px;
-  margin-top: 30px;
-  background: url("../bg.png");
-  background-size: 10px;
-}
-
-.game-over {
+.right-wrap .game-over {
   color: #FF2C00;
   display: none;
 }
 
-.game-over.active {
+.right-wrap .game-over.active {
   display: block;
 }
 /*# sourceMappingURL=style.css.map */
